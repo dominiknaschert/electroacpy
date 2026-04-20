@@ -1,0 +1,2 @@
+RUN_INTERIOR = True
+RUN_EXTERIOR = True
