@@ -1,0 +1,3 @@
+- mesh muss richtig ausgerichtet sein, am besten in der fusion datei bereits richtig aurichten.
+- am Winkeln optimieren, fusion datei schonn berreits damit kompatibel.
+- zwei treiber gleichzeitig simulieren.

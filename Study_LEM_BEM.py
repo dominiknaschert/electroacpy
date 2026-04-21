@@ -1,14 +1,15 @@
 import electroacPy as ep
+from electroacPy.acousticSim.bem import boundaryConditions
 import numpy as np
-import warnings
 
-from mic_config import mic_positions, mic_labels
+
+from mic_config import mic_positions
 
 from study_config import RUN_INTERIOR, RUN_EXTERIOR
 
 f_start = 20      # Startfrequenz (Hz)
 f_end = 1000     # Endfrequenz (Hz)
-bands_per_octave = 12
+bands_per_octave = 6
 
 # Anzahl der Bänder
 n_bands = int(np.floor(bands_per_octave * np.log2(f_end / f_start))) + 1
@@ -36,7 +37,6 @@ Rms = 4.55     # kg/s
 Sd  = 522e-4    # m^2
 U = 2.83       # V (1W an 8 Ohm)
 
-from electroacPy.acousticSim.bem import boundaryConditions
 
 if RUN_INTERIOR:
     system.lem_driver("12NDL88", U, Le, Re, Cms, Mms, Rms, Bl, Sd, ref2bem=2)
@@ -92,8 +92,15 @@ if RUN_EXTERIOR:
         L1=2, L2=2, step=343/1000/6,
         plane="xz", offset=[0, 0, 0.2]
     )
+    system.evaluation_sphericalRadiation(
+        reference_study="AKT_exterior",
+        evaluation_name="spherical",
+        nMic=625,
+        radius=2,
+        offset=[0, 0, 0.2]
+    )
 
 system.run()
 system.plot_results()
 
-ep.save("AKT_Soundssystem_TOP_v1", system)
+ep.save("KonAKT_Soundssystem_TOP_v2", system)

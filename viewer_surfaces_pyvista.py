@@ -44,6 +44,7 @@ mic_points_offset = mic_positions + INTERIOR_OFFSET
 mic_cloud = pv.PolyData(mic_points_offset)
 
 plotter = pv.Plotter()
+plotter.add_axes(xlabel="X", ylabel="Y", zlabel="Z")
 plotter.add_mesh(surf, show_edges=True, scalars="phys_id", cmap="tab10",
                  show_scalar_bar=True, opacity=0.6)
 

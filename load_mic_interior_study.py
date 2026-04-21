@@ -3,8 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 system = ep.load("AKT_Soundssystem_TOP_v1")
-system.plot_results()
-
 freq   = system.frequency
 
 ev   = system.evaluation["AKT_interior"]
