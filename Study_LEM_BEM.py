@@ -5,11 +5,17 @@ import numpy as np
 
 from mic_config import mic_positions
 
+# Test-Mics 5cm vor jedem Treiber entlang der Flächennormale
+mic_treiber = np.array([
+    [-0.1967,  0.2879, -0.0783],  # vor treiber_rechts (surf 86)
+    [ 0.1967,  0.2879, -0.0783],  # vor treiber_links  (surf 87)
+])
+
 from study_config import RUN_INTERIOR, RUN_EXTERIOR
 
-f_start = 20      # Startfrequenz (Hz)
+f_start = 100      # Startfrequenz (Hz)
 f_end = 1000     # Endfrequenz (Hz)
-bands_per_octave = 6
+bands_per_octave = 1
 
 # Anzahl der Bänder
 n_bands = int(np.floor(bands_per_octave * np.log2(f_end / f_start))) + 1
@@ -37,9 +43,13 @@ Rms = 4.55     # kg/s
 Sd  = 522e-4    # m^2
 U = 2.83       # V (1W an 8 Ohm)
 
+Liter = 108.9 # Rückkammer des Gehäuses in Litern
+Volumen = Liter/1000 # in m³
 
+'''
 if RUN_INTERIOR:
     system.lem_driver("12NDL88", U, Le, Re, Cms, Mms, Rms, Bl, Sd, ref2bem=2)
+    system.lem_enclosure("sealed", Volumen, setDriver="12NDL88")
     bc = boundaryConditions()
     bc.addSurfaceImpedance("interface_open", index=1,
                            data_type="absorption", value=1.0)
@@ -65,11 +75,11 @@ if RUN_INTERIOR:
         evaluation_name="frf_interface",
         microphonePositions=mic_positions,
     )
-
+'''
 if RUN_EXTERIOR:
     system.lem_driver("12NDL88_ext", U, Le, Re, Cms, Mms, Rms, Bl, Sd, ref2bem=1)
     system.study_acousticBEM("AKT_exterior",
-                             meshPath="mesh/AKT_Soundsystem_op1_exterior.msh",
+                             meshPath="mesh_KontAKT/Hifi_Top_Dominik_v1_exterior.msh",
                              acoustic_radiator="12NDL88_ext",
                              domain="exterior")
     system.evaluation_polarRadiation(
@@ -98,6 +108,11 @@ if RUN_EXTERIOR:
         nMic=625,
         radius=2,
         offset=[0, 0, 0.2]
+    )
+    system.evaluation_fieldPoint(
+        reference_study="AKT_exterior",
+        evaluation_name="check_treiber",
+        microphonePositions=mic_treiber,
     )
 
 system.run()

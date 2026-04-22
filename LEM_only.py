@@ -20,7 +20,7 @@ Sd  = 522e-4    # m^2
 
 U = 2.83       # V (1W an 8 Ohm)
 
-Liter = 50 # Liter
+Liter = 108.9 # Rückkammer des Gehäuses in Litern
 Volumen = Liter/1000 # in m³
 
 frequency = np.arange(10, 10000, 1)
@@ -33,7 +33,7 @@ sys_free.lem_driver("12NDL88", U, Le, Re, Cms, Mms, Rms, Bl, Sd)
 # Impedanz-Plot (nur Treiber)
 sys_free.driver["12NDL88"].plotZe()
 
-# --- Geschlossenes Gehäuse (sealed, Vb = 50 Liter) ---
+# --- Geschlossenes Gehäuse (sealed, Vb = 108.9 Liter) ---
 sys_box = ep.loudspeakerSystem(frequency)
 sys_box.lem_driver("12NDL88", U, Le, Re, Cms, Mms, Rms, Bl, Sd)
 sys_box.lem_enclosure("12NDL88", Volumen, setDriver="12NDL88")

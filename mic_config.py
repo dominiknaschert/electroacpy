@@ -1,29 +1,20 @@
 import numpy as np
 
-# 4 Basispositionen (x, y) — im Viewer anpassen
-base_positions = [
-    (0.02,  0.02),   # links
-    (0.065, 0.14),   # mitte-links
-    (0.2,   0.025),   # mitte
-    (0.07,  0.08),   # rechts
-    (0.28,  0.02),   # weit rechts
-    (0.13,  0.08),   # mitte-rechts
-    (0.10,  0.03),   # links-tief
-]
+# Interface liegt bei y=0, x=-0.385..0.385, z=-0.400..-0.385
+# Mics 5cm vor dem Interface (y=-0.05), symmetrisches x-Raster, z in Interface-Mitte
 
-# z-Raster: von z_min bis z_max mit n_z Punkten
-z_min = 0.060
-z_max = 0.370
-n_z   = 5
+spacing  = 0.10   # gleichmäßiger Abstand in x und y
+x_offset = 0.0    # Verschiebung des Rasters in x
+y_offset = 0.52    # Verschiebung des Rasters in y
 
-z_vals = np.linspace(z_min, z_max, n_z)
+x_vals = np.arange(-0.30, 0.31, spacing) + x_offset
+y_vals = -np.arange(spacing, 4*spacing + 0.001, spacing) + y_offset
+z_mic  = -0.02  # Mitte der Interface-Fläche
 
 mic_positions = np.array([
-    [x, y, z]
-    for (x, y) in base_positions
-    for z in z_vals
+    [x, y, z_mic]
+    for y in y_vals
+    for x in x_vals
 ])
 
-mic_labels = [f"({x:.2f},{y:.2f}) z={z:.2f}"
-              for (x, y) in base_positions
-              for z in z_vals]
+mic_labels = [f"({x:.2f}, y={y:.2f})" for y in y_vals for x in x_vals]

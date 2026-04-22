@@ -3,8 +3,9 @@ import gmsh
 gmsh.initialize()
 gmsh.option.setNumber("General.Terminal", 1)
 pfad = "mesh/AKT_Soundsystem_op1_v2.step"
+pfad_2 = "mesh/Hifi Top_Dominik_v1_mit_horn.step"
 # STEP- oder MSH-Datei laden
-gmsh.open(pfad) 
+gmsh.open(pfad_2) 
 
 gmsh.model.geo.synchronize()
 
